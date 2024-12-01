@@ -1,7 +1,6 @@
 import javax.swing.*;
 
 public class Card {
-
     String cardName;
 
     ImageIcon cardImageIcon;
@@ -10,7 +9,7 @@ public class Card {
         this.cardName = cardName;
         this.cardImageIcon = cardImageIcon;
     }
-    
+
     @Override
     public String toString() {
         return cardName;
