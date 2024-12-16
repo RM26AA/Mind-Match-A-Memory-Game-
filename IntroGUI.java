@@ -7,9 +7,9 @@
  * - "Help" opens a help dialog with instructions.
  * - "Quit" prompts the user to exit the game.
  * -
- * Version: [V4]
+ * Version: [V5]
  * Author: [Romeo Maunick - RM]
- * Date: [08/12/2024]       //change to current date
+ * Date: [16/12/2024]       //change to current date
  */
 
 import javax.swing.*;
@@ -23,6 +23,8 @@ public class IntroGUI {
     JFrame frame = new JFrame("Mind Match: A Memory Game");
     JButton playButton = new JButton("Play");
     JButton helpButton = new JButton("Help");
+    JButton quitButton = new JButton("Quit");
+    JLabel imageLabel = new JLabel();  // Displays an image below the buttons
 
     /**
      * Constructor for IntroGUI. Sets up the main window, configures buttons,
@@ -59,11 +61,34 @@ public class IntroGUI {
             }
         });
 
+        // Quit button setup - confirms exit
+        quitButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int response = JOptionPane.showConfirmDialog(frame, "Are you sure you want to quit the application?", "Quit Game", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    System.exit(0);  // Close the game
+                }
+            }
+        });
+
         // Add buttons and spacing to center panel
         centerPanel.add(playButton);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));  // Space between buttons
         centerPanel.add(helpButton);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));  // Space between buttons
+        centerPanel.add(quitButton);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));  // Space before image
+
+        // Load and display the banner image below buttons
+        Image bannerImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V5/MatchCards5/src/img2/banner2.jpg").getImage();
+        //Image bannerImg = new ImageIcon("E:\\FINAL YR PROJECT V2\\CardMatch V5\\MatchCards5\\src\\img2\\beerus1.jpg").getImage();
+        Image gameImage = bannerImg.getScaledInstance(300, 250, Image.SCALE_SMOOTH);  // Resize as needed
+        imageLabel.setIcon(new ImageIcon(gameImage));
+        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(imageLabel);
 
         // Add center panel to the frame and set visibility
         frame.add(centerPanel, BorderLayout.CENTER);
@@ -79,7 +104,6 @@ public class IntroGUI {
         JFrame helpFrame = new JFrame("Help");
         helpFrame.setSize(610, 300);
         helpFrame.setLocationRelativeTo(frame);  // Center relative to the main frame
-        //helpFrame.setLocationRelativeTo(helpFrame);
         helpFrame.setLayout(new BorderLayout());
 
         // Help title setup
