@@ -7,9 +7,9 @@
  * - "Help" opens a help dialog with instructions.
  * - "Quit" prompts the user to exit the game.
  * -
- * Version: [V5]
+ * Version: [V6]
  * Author: [Romeo Maunick - RM]
- * Date: [16/12/2024]       //change to current date
+ * Date: [18/12/2024]       //change to current date
  */
 
 import javax.swing.*;
@@ -50,6 +50,13 @@ public class IntroGUI {
         // Play button setup - launches the game
         playButton.setFont(new Font("Arial", Font.PLAIN, 18));
         playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();  // Close the intro GUI
+                new MatchCards();  // Launch the main game
+            }
+        });
 
         // Help button setup - displays help dialog
         helpButton.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -83,8 +90,7 @@ public class IntroGUI {
         centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));  // Space before image
 
         // Load and display the banner image below buttons
-        Image bannerImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V5/MatchCards5/src/img2/banner2.jpg").getImage();
-        //Image bannerImg = new ImageIcon("E:\\FINAL YR PROJECT V2\\CardMatch V5\\MatchCards5\\src\\img2\\beerus1.jpg").getImage();
+        Image bannerImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V6/MatchCards6/src/img2/banner2.jpg").getImage();
         Image gameImage = bannerImg.getScaledInstance(300, 250, Image.SCALE_SMOOTH);  // Resize as needed
         imageLabel.setIcon(new ImageIcon(gameImage));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -119,8 +125,7 @@ public class IntroGUI {
                         "\n3. To reveal a card, click on it." +
                         "\n4. Find and match all pairs by remembering each card's location." +
                         "\n5. The number of errors is displayed at the top of the screen." +
-                        "\nFor further assistance, please contact askherts.ac.uk." +
-                        "\nThank you!"
+                        "\nFor further assistance, please contact askherts.ac.uk.\nThank you!"
         );
         helpText.setEditable(false);
         helpText.setFont(new Font("Arial", Font.PLAIN, 16));
