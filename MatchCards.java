@@ -5,9 +5,9 @@
  * for setting up the game board, shuffling and displaying the cards, and handling user interactions.
  * The game tracks and displays the player's error count and provides a restart option.
  * -
- * Version: [V6]
+ * Version: [V7]
  * Author: [Romeo Maunick - RM]
- * Date: [18/12/2024]       //change to current date
+ * Date: [20/12/2024]       //change to current date
  */
 
 import java.awt.*;      // GUI components
@@ -26,8 +26,11 @@ public class MatchCards {
     // Game settings for grid layout and card dimensions
     int rows = 4;
     int columns = 5;
-    int cardWidth = 90;
-    int cardHeight = 128;
+    //int cardWidth = 90;       //old version
+    //int cardHeight = 128;     //old version
+
+    int cardWidth = 180;     //new version
+    int cardHeight = 220;   //new version
 
     // Deck of cards for the game and back image for face-down cards
     ArrayList<Card> cardSet;
@@ -39,7 +42,11 @@ public class MatchCards {
 
     // GUI components
     JFrame frame = new JFrame("LizardBallZ Match Cards");
+    JLabel textLabel = new JLabel();
+    JPanel textpanel = new JPanel();
     JPanel boardPanel = new JPanel();
+    JPanel restartGamePanel = new JPanel();
+    JButton restartButton = new JButton();
 
     // Game state variables
     ArrayList<JButton> board;     // Stores buttons for each card
@@ -85,6 +92,21 @@ public class MatchCards {
         }
         frame.add(boardPanel);
 
+        // Restart button setup
+        restartButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        restartButton.setText("Restart Game");
+        restartButton.setPreferredSize(new Dimension(boardWidth, 30));
+        restartButton.setFocusable(false);
+        restartButton.setEnabled(false);
+        restartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                restartGame();
+            }
+        });
+        restartGamePanel.add(restartButton);
+        frame.add(restartGamePanel, BorderLayout.SOUTH);
+
         frame.pack(); // Recalculate window size
         frame.setVisible(true);
 
@@ -106,7 +128,7 @@ public class MatchCards {
         cardSet = new ArrayList<>();
         for (String cardName : cardList) {
             // Load card image and scale it to specified dimensions
-            Image cardImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V6/MatchCards6/src/img2/" + cardName + ".jpg").getImage();
+            Image cardImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V7/MatchCards7/src/img2/" + cardName + ".jpg").getImage();
             ImageIcon cardImageIcon = new ImageIcon(cardImg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
 
             // Create and add the card to the cardSet
@@ -116,7 +138,7 @@ public class MatchCards {
         cardSet.addAll(cardSet); // Duplicate cards to create pairs
 
         // Load and set the back image for face-down cards
-        Image cardBackImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V6/MatchCards6/src/img2/backCard2.jpg").getImage();
+        Image cardBackImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V7/MatchCards7/src/img2/backCard2.jpg").getImage();
         cardBackImageIcon = new ImageIcon(cardBackImg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
     }
 
@@ -176,9 +198,26 @@ public class MatchCards {
                 button.setIcon(cardBackImageIcon);
             }
             gameReady = true;
+            restartButton.setEnabled(true);
         }
     }
 
+    /**
+     * Resets the game by shuffling the cards and resetting all game variables.
+     */
+    void restartGame() {
+        gameReady = false;
+        restartButton.setEnabled(false);
+        card1Selected = null;
+        card2Selected = null;
+        shuffleCards();
 
+        // Re-assign icons to match the new shuffled order
+        for (int i = 0; i < board.size(); i++) {
+            board.get(i).setIcon(cardSet.get(i).cardImageIcon);
+        }
+
+        hideCardTimer.start(); // Start timer to reset all cards face-down
+    }
 }
 
