@@ -5,9 +5,9 @@
  * for setting up the game board, shuffling and displaying the cards, and handling user interactions.
  * The game tracks and displays the player's error count and provides a restart option.
  * -
- * Version: [V7]
+ * Version: [V8]
  * Author: [Romeo Maunick - RM]
- * Date: [20/12/2024]       //change to current date
+ * Date: [23/12/2024]       //change to current date
  */
 
 import java.awt.*;      // GUI components
@@ -26,11 +26,8 @@ public class MatchCards {
     // Game settings for grid layout and card dimensions
     int rows = 4;
     int columns = 5;
-    //int cardWidth = 90;       //old version
-    //int cardHeight = 128;     //old version
-
-    int cardWidth = 180;     //new version
-    int cardHeight = 220;   //new version
+    int cardWidth = 180;
+    int cardHeight = 220;
 
     // Deck of cards for the game and back image for face-down cards
     ArrayList<Card> cardSet;
@@ -49,6 +46,7 @@ public class MatchCards {
     JButton restartButton = new JButton();
 
     // Game state variables
+    int errorCount = 0;
     ArrayList<JButton> board;     // Stores buttons for each card
     Timer hideCardTimer;          // Timer to delay hiding unmatched cards
     boolean gameReady = false;    // Tracks if the game is ready for player interaction
@@ -69,6 +67,14 @@ public class MatchCards {
         frame.setLocationRelativeTo(null);  // Center the window on screen
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Setup error display at the top
+        textLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
+        textLabel.setText("Errors: " + errorCount);
+        textpanel.setPreferredSize(new Dimension(boardWidth, 30));
+        textpanel.add(textLabel);
+        frame.add(textpanel, BorderLayout.NORTH);
 
         // Initialize the card game board
         board = new ArrayList<>();
@@ -128,7 +134,7 @@ public class MatchCards {
         cardSet = new ArrayList<>();
         for (String cardName : cardList) {
             // Load card image and scale it to specified dimensions
-            Image cardImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V7/MatchCards7/src/img2/" + cardName + ".jpg").getImage();
+            Image cardImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V8/MatchCards8/src/img2/" + cardName + ".jpg").getImage();
             ImageIcon cardImageIcon = new ImageIcon(cardImg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
 
             // Create and add the card to the cardSet
@@ -138,7 +144,7 @@ public class MatchCards {
         cardSet.addAll(cardSet); // Duplicate cards to create pairs
 
         // Load and set the back image for face-down cards
-        Image cardBackImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V7/MatchCards7/src/img2/backCard2.jpg").getImage();
+        Image cardBackImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V8/MatchCards8/src/img2/backCard2.jpg").getImage();
         cardBackImageIcon = new ImageIcon(cardBackImg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
     }
 
@@ -175,6 +181,8 @@ public class MatchCards {
 
             // Check for match
             if (!card1Selected.getIcon().equals(card2Selected.getIcon())) {
+                errorCount++;
+                textLabel.setText("Errors: " + errorCount);
                 hideCardTimer.start(); // Hide cards after delay
             } else {
                 // Cards match, reset selections
@@ -211,6 +219,8 @@ public class MatchCards {
         card1Selected = null;
         card2Selected = null;
         shuffleCards();
+        errorCount = 0;
+        textLabel.setText("Errors: " + errorCount);
 
         // Re-assign icons to match the new shuffled order
         for (int i = 0; i < board.size(); i++) {
