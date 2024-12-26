@@ -7,9 +7,9 @@
  * - "Help" opens a help dialog with instructions.
  * - "Quit" prompts the user to exit the game.
  * -
- * Version: [V8]
+ * Version: [V9]
  * Author: [Romeo Maunick - RM]
- * Date: [23/12/2024]       //change to current date
+ * Date: [25/12/2024]       //change to current date
  */
 
 import javax.swing.*;
@@ -90,7 +90,7 @@ public class IntroGUI {
         centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));  // Space before image
 
         // Load and display the banner image below buttons
-        Image bannerImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V8/MatchCards8/src/img2/banner2.jpg").getImage();
+        Image bannerImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V9/MatchCards9/src/img2/banner2.jpg").getImage();
         Image gameImage = bannerImg.getScaledInstance(300, 250, Image.SCALE_SMOOTH);  // Resize as needed
         imageLabel.setIcon(new ImageIcon(gameImage));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

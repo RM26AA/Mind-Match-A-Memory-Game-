@@ -5,9 +5,9 @@
  * for setting up the game board, shuffling and displaying the cards, and handling user interactions.
  * The game tracks and displays the player's error count and provides a restart option.
  * -
- * Version: [V8]
+ * Version: [V9]
  * Author: [Romeo Maunick - RM]
- * Date: [23/12/2024]       //change to current date
+ * Date: [25/12/2024]       //change to current date
  */
 
 import java.awt.*;      // GUI components
@@ -38,7 +38,7 @@ public class MatchCards {
     int boardHeight = rows * cardHeight;
 
     // GUI components
-    JFrame frame = new JFrame("LizardBallZ Match Cards");
+    JFrame frame = new JFrame("LizardBall Z Match Cards");
     JLabel textLabel = new JLabel();
     JPanel textpanel = new JPanel();
     JPanel boardPanel = new JPanel();
@@ -47,6 +47,9 @@ public class MatchCards {
 
     // Game state variables
     int errorCount = 0;
+    int matchedPairs = 0; // Tracks the number of matched pairs
+
+    int score = 100;      // Updates player score
     ArrayList<JButton> board;     // Stores buttons for each card
     Timer hideCardTimer;          // Timer to delay hiding unmatched cards
     boolean gameReady = false;    // Tracks if the game is ready for player interaction
@@ -134,7 +137,7 @@ public class MatchCards {
         cardSet = new ArrayList<>();
         for (String cardName : cardList) {
             // Load card image and scale it to specified dimensions
-            Image cardImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V8/MatchCards8/src/img2/" + cardName + ".jpg").getImage();
+            Image cardImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V9/MatchCards9/src/img2/" + cardName + ".jpg").getImage();
             ImageIcon cardImageIcon = new ImageIcon(cardImg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
 
             // Create and add the card to the cardSet
@@ -144,7 +147,7 @@ public class MatchCards {
         cardSet.addAll(cardSet); // Duplicate cards to create pairs
 
         // Load and set the back image for face-down cards
-        Image cardBackImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V8/MatchCards8/src/img2/backCard2.jpg").getImage();
+        Image cardBackImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V9/MatchCards9/src/img2/backCard2.jpg").getImage();
         cardBackImageIcon = new ImageIcon(cardBackImg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
     }
 
@@ -182,15 +185,96 @@ public class MatchCards {
             // Check for match
             if (!card1Selected.getIcon().equals(card2Selected.getIcon())) {
                 errorCount++;
+                score -= 1;
                 textLabel.setText("Errors: " + errorCount);
                 hideCardTimer.start(); // Hide cards after delay
             } else {
                 // Cards match, reset selections
                 card1Selected = null;
                 card2Selected = null;
+                matchedPairs++;
+
+
+                // Check if all pairs are matched
+                if (matchedPairs == cardSet.size() / 2) {
+                    showGameOverPopup(); // Trigger Game Over popup
+                }
             }
         }
     }
+
+    /**
+     * Displays a game-over popup when all cards are matched.
+     */
+    void showGameOverPopup() {
+        // Create a dialog for the game-over message
+        JDialog gameOverDialog = new JDialog(frame, "Game Over", true);
+        gameOverDialog.setLayout(new BorderLayout());
+        gameOverDialog.setSize(300, 200);
+        gameOverDialog.setLocationRelativeTo(frame);
+
+        // Main message panel
+        JPanel messagePanel = new JPanel();
+        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
+
+        // Add Game Over message
+        JLabel gameOverLabel = new JLabel("Game Over!");
+        gameOverLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        gameOverLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center text
+        gameOverLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        messagePanel.add(gameOverLabel);
+
+        // Add Errors message
+        JLabel errorsLabel = new JLabel("Errors: " + errorCount);
+        errorsLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        errorsLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center text
+        errorsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        messagePanel.add(errorsLabel);
+
+        // Add Well done message
+        JLabel wellDoneLabel = new JLabel("Well done!");
+        wellDoneLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        wellDoneLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center text
+        wellDoneLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        messagePanel.add(wellDoneLabel);
+
+        // Add Score message
+        JLabel scoreLabel = new JLabel("Score: " + score);
+        scoreLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center text
+        scoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        messagePanel.add(scoreLabel);
+
+        // Add spacing between labels
+        messagePanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        gameOverDialog.add(messagePanel, BorderLayout.CENTER);
+
+        // Buttons panel
+        JPanel buttonPanel = new JPanel();
+        JButton restartButton = new JButton("Restart");
+        JButton closeButton = new JButton("Close");
+
+        // Restart button action
+        restartButton.addActionListener(e -> {
+            gameOverDialog.dispose();
+            restartGame();
+        });
+
+        // Close button action
+        closeButton.addActionListener(e -> {
+            gameOverDialog.dispose();
+            frame.dispose(); // Close the game frame
+            new IntroGUI();  // Return to intro screen
+        });
+
+        buttonPanel.add(restartButton);
+        buttonPanel.add(closeButton);
+        gameOverDialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        gameOverDialog.setVisible(true);
+    }
+
 
     /**
      * Hides unmatched cards by flipping them back to the back image.
@@ -218,16 +302,19 @@ public class MatchCards {
         restartButton.setEnabled(false);
         card1Selected = null;
         card2Selected = null;
+        matchedPairs = 0; // Reset matched pairs
         shuffleCards();
         errorCount = 0;
+        score = 100;
         textLabel.setText("Errors: " + errorCount);
 
-        // Re-assign icons to match the new shuffled order
         for (int i = 0; i < board.size(); i++) {
             board.get(i).setIcon(cardSet.get(i).cardImageIcon);
         }
 
-        hideCardTimer.start(); // Start timer to reset all cards face-down
+        hideCardTimer.start();
     }
+
 }
+
 
