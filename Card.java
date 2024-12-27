@@ -4,9 +4,9 @@
  * Description: Represents an individual card in the memory-matching game.
  * Each card has a name and an image associated with it.
  * -
- * Version: [V9]
+ * Version: [V10]
  * Author: [Romeo Maunick - RM]
- * Date: [25/12/2024]       //change to current date
+ * Date: [27/12/2024]       //change to current date
  */
 
 import javax.swing.*;

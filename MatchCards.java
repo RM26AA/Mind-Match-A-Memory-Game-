@@ -5,9 +5,9 @@
  * for setting up the game board, shuffling and displaying the cards, and handling user interactions.
  * The game tracks and displays the player's error count and provides a restart option.
  * -
- * Version: [V9]
+ * Version: [V10]
  * Author: [Romeo Maunick - RM]
- * Date: [25/12/2024]       //change to current date
+ * Date: [27/12/2024]       //change to current date
  */
 
 import java.awt.*;      // GUI components
@@ -137,7 +137,7 @@ public class MatchCards {
         cardSet = new ArrayList<>();
         for (String cardName : cardList) {
             // Load card image and scale it to specified dimensions
-            Image cardImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V9/MatchCards9/src/img2/" + cardName + ".jpg").getImage();
+            Image cardImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V10/MatchCards10/src/img2/" + cardName + ".jpg").getImage();
             ImageIcon cardImageIcon = new ImageIcon(cardImg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
 
             // Create and add the card to the cardSet
@@ -147,7 +147,7 @@ public class MatchCards {
         cardSet.addAll(cardSet); // Duplicate cards to create pairs
 
         // Load and set the back image for face-down cards
-        Image cardBackImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V9/MatchCards9/src/img2/backCard2.jpg").getImage();
+        Image cardBackImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V10/MatchCards10/src/img2/backCard2.jpg").getImage();
         cardBackImageIcon = new ImageIcon(cardBackImg.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
     }
 
@@ -194,7 +194,6 @@ public class MatchCards {
                 card2Selected = null;
                 matchedPairs++;
 
-
                 // Check if all pairs are matched
                 if (matchedPairs == cardSet.size() / 2) {
                     showGameOverPopup(); // Trigger Game Over popup
@@ -205,8 +204,9 @@ public class MatchCards {
 
     /**
      * Displays a game-over popup when all cards are matched.
+     * V1 - correct but not working with testing
      */
-    void showGameOverPopup() {
+    /*void showGameOverPopup() {
         // Create a dialog for the game-over message
         JDialog gameOverDialog = new JDialog(frame, "Game Over", true);
         gameOverDialog.setLayout(new BorderLayout());
@@ -273,7 +273,85 @@ public class MatchCards {
         gameOverDialog.add(buttonPanel, BorderLayout.SOUTH);
 
         gameOverDialog.setVisible(true);
+
+
+    } */
+
+    /*
+    Re-modified version for testing (V2)
+    This version works with testing
+     */
+    JDialog showGameOverPopup() {
+        JDialog gameOverDialog = new JDialog(frame, "Game Over", true);
+        gameOverDialog.setLayout(new BorderLayout());
+        gameOverDialog.setSize(300, 200);
+
+
+        // Main message panel
+        JPanel messagePanel = new JPanel();
+        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
+
+        // Add Game Over message
+        JLabel gameOverLabel = new JLabel("Game Over!");
+        gameOverLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        gameOverLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center text
+        gameOverLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        messagePanel.add(gameOverLabel);
+
+        // Add Errors message
+        JLabel errorsLabel = new JLabel("Errors: " + errorCount);
+        errorsLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        errorsLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center text
+        errorsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        messagePanel.add(errorsLabel);
+
+        // Add Well done message
+        JLabel wellDoneLabel = new JLabel("Well done!");
+        wellDoneLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        wellDoneLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center text
+        wellDoneLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        messagePanel.add(wellDoneLabel);
+
+        // Add Score message
+        JLabel scoreLabel = new JLabel("Score: " + score);
+        scoreLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center text
+        scoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        messagePanel.add(scoreLabel);
+
+        // Add spacing between labels
+        messagePanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        gameOverDialog.add(messagePanel, BorderLayout.CENTER);
+
+        // Add Restart button
+        JButton restartButton = new JButton("Restart");
+        restartButton.addActionListener(e -> {
+            gameOverDialog.dispose();
+            restartGame();
+        });
+
+        // Add Close button
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(e -> {
+            gameOverDialog.dispose();
+            frame.dispose(); // Close the game frame
+            new IntroGUI();  // Return to intro screen
+        });
+
+        // Add buttons to the dialog
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(restartButton);
+        buttonPanel.add(closeButton);
+        gameOverDialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        gameOverDialog.pack();
+        gameOverDialog.setLocationRelativeTo(frame);
+        gameOverDialog.setVisible(true);
+
+        return gameOverDialog; // Return the dialog for testing
     }
+
 
 
     /**
