@@ -9,7 +9,7 @@
  * -
  * Version: [V10]
  * Author: [Romeo Maunick - RM]
- * Date: [27/12/2024]       //change to current date
+ * Date: [27/12/2024]
  */
 
 import javax.swing.*;
@@ -90,7 +90,7 @@ public class IntroGUI {
         centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));  // Space before image
 
         // Load and display the banner image below buttons
-        Image bannerImg = new ImageIcon("E:/FINAL YR PROJECT V2/CardMatch V10/MatchCards10/src/img2/banner2.jpg").getImage();
+        Image bannerImg = new ImageIcon("src/img2/banner2.jpg").getImage();
         Image gameImage = bannerImg.getScaledInstance(300, 250, Image.SCALE_SMOOTH);  // Resize as needed
         imageLabel.setIcon(new ImageIcon(gameImage));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -108,8 +108,8 @@ public class IntroGUI {
     private void showHelpDialog() {
         // Help dialog window setup
         JFrame helpFrame = new JFrame("Help");
-        helpFrame.setSize(610, 300);
-        helpFrame.setLocationRelativeTo(frame);  // Center relative to the main frame
+        helpFrame.setSize(710, 300);
+        helpFrame.setLocationRelativeTo(null);  // Center
         helpFrame.setLayout(new BorderLayout());
 
         // Help title setup
@@ -125,6 +125,10 @@ public class IntroGUI {
                         "\n3. To reveal a card, click on it." +
                         "\n4. Find and match all pairs by remembering each card's location." +
                         "\n5. The number of errors is displayed at the top of the screen." +
+                        "\n6. To restart the game, click the restart button below." +
+                        "\n7. When all cards have been matched, you will be prompted with a game-over screen." +
+                        "\n8. The game-over screen will show you the number of errors, score and options to restart or close." +
+                        "\n " +
                         "\nFor further assistance, please contact askherts.ac.uk." +
                         "\nThank you!"
         );

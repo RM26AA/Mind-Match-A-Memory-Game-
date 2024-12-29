@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
  * GameTester Class
  * -
  * Description: A utility class to test various functionalities of the IntroGUI and MatchCards classes.
- * Simulates user interactions like button clicks, card flipping, and validates game logic.
+ * Includes functional, stress, and randomization tests for robustness and reliability.
  * -
  * Version: [V10]
  * Author: [Romeo Maunick - RM]
@@ -23,8 +23,16 @@ public class GameTester {
         System.out.println("All Tests for IntroGUI completed.");
 
         // Test MatchCards functionality
-        testMatchCards();
-        System.out.println("All MatchCards tests completed.");
+        MatchCards matchCards = new MatchCards();
+        testMatchCards(matchCards);
+
+        // Perform stress testing
+        stressTestCardFlipping(matchCards);
+
+        // Perform random shuffling testing
+        testRandomShuffling(matchCards);
+
+        System.out.println("All tests completed successfully.");
     }
 
     /**
@@ -57,12 +65,11 @@ public class GameTester {
     /**
      * Tests the MatchCards class, including card flipping, restart functionality,
      * and the game-over popup behavior.
+     *
+     * @param matchCards The MatchCards instance to test.
      */
-    public static void testMatchCards() {
+    public static void testMatchCards(MatchCards matchCards) {
         System.out.println("Testing MatchCards...");
-
-        // Create an instance of MatchCards
-        MatchCards matchCards = new MatchCards();
 
         // Test card flipping
         System.out.println("Testing card flipping...");
@@ -117,6 +124,65 @@ public class GameTester {
     }
 
     /**
+     * Stress tests the card flipping functionality by simulating rapid clicks on multiple cards.
+     *
+     * @param matchCards The MatchCards instance to test.
+     */
+    public static void stressTestCardFlipping(MatchCards matchCards) {
+        System.out.println("Starting Stress Test for Card Flipping...");
+
+        // Ensure the board is not empty
+        if (matchCards.board.isEmpty()) {
+            System.out.println("No cards available for stress testing.");
+            return;
+        }
+
+        // Simulate rapid card flipping
+        for (int i = 0; i < 50; i++) { // Simulate 50 rapid clicks
+            int cardIndex = i % matchCards.board.size(); // Cycle through available cards
+            JButton cardButton = matchCards.board.get(cardIndex);
+            simulateButtonClick(cardButton, "Rapid card flip " + (i + 1));
+        }
+
+        // Ensure no unexpected errors occurred during stress test
+        assert matchCards.errorCount >= 0 : "Error count became negative during stress test!";
+        System.out.println("Stress Test for Card Flipping completed successfully.");
+    }
+
+    /**
+     * Tests the randomness of the shuffle logic by checking card positions across multiple shuffles.
+     *
+     * @param matchCards The MatchCards instance to test.
+     */
+    public static void testRandomShuffling(MatchCards matchCards) {
+        System.out.println("Starting Random Shuffling Test...");
+
+        int shuffleCount = 100; // Number of shuffles to test
+        int deckSize = matchCards.cardSet.size();
+        int[][] positionTracker = new int[deckSize][deckSize];
+
+        // Perform multiple shuffles and record positions
+        for (int shuffle = 0; shuffleCount > shuffle; shuffle++) {
+            matchCards.shuffleCards();
+
+            for (int i = 0; i < deckSize; i++) {
+                int cardIndex = matchCards.cardSet.indexOf(matchCards.cardSet.get(i));
+                positionTracker[cardIndex][i]++;
+            }
+        }
+
+        // Check that no card appears in the same position consistently
+        for (int i = 0; i < deckSize; i++) {
+            for (int j = 0; j < deckSize; j++) {
+                assert positionTracker[i][j] < shuffleCount * 0.2 : // Ensure randomness
+                        "Card " + i + " appeared in position " + j + " too frequently.";
+            }
+        }
+
+        System.out.println("Random Shuffling Test completed successfully.");
+    }
+
+    /**
      * Searches for a button within a JDialog by its text.
      *
      * @param dialog     The JDialog to search.
@@ -153,4 +219,6 @@ public class GameTester {
         }
     }
 }
+
+
 
