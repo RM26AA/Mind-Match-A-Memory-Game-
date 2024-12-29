@@ -2,7 +2,7 @@
 
 ## Developer
 R.Maunick
-29/11/2024
+- 29/11/2024
 
 ## Description
 Lizard Ball Z Match Cards is a simple memory-matching game developed in Java using the Swing library. The objective of the game is to match pairs of cards while minimizing the number of errors. It features an intuitive graphical interface with an introductory menu, a grid-based game board, and a game-over popup with options to restart or return to the main menu.
