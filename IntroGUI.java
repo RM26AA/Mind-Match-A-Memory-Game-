@@ -7,9 +7,9 @@
  * - "Help" opens a help dialog with instructions.
  * - "Quit" prompts the user to exit the game.
  * -
- * Version: [V10]
+ * Version: [V11]
  * Author: [Romeo Maunick - RM]
- * Date: [27/12/2024]
+ * Date: [04/02/2025]
  */
 
 import javax.swing.*;

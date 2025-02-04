@@ -5,9 +5,9 @@
  * for setting up the game board, shuffling and displaying the cards, and handling user interactions.
  * The game tracks and displays the player's error count and provides a restart option.
  * -
- * Version: [V10]
+ * Version: [V11]
  * Author: [Romeo Maunick - RM]
- * Date: [27/12/2024]
+ * Date: [04/02/2025]
  */
 
 import java.awt.*;      // GUI components

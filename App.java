@@ -3,9 +3,9 @@
  * -
  * Description: Entry point of the application. Launches the IntroGUI which serves as the main menu screen for the game.
  * -
- * Version: [V10]
+ * Version: [V11]
  * Author: [Romeo Maunick - RM]
- * Date: [27/12/2024]
+ * Date: [04/02/2025]
  */
 
 public class App {

@@ -1,18 +1,19 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 /**
  * GameTester Class
  * -
  * Description: A utility class to test various functionalities of the IntroGUI and MatchCards classes.
  * Includes functional, stress, and randomization tests for robustness and reliability.
  * -
- * Version: [V10]
+ * Version: [V11]
  * Author: [Romeo Maunick - RM]
- * Date: [27/12/2024]
+ * Date: [04/02/2025]
  */
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class GameTester {
 
     public static void main(String[] args) {
